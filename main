@@ -1,5 +1,5 @@
 -- Anti hub UI Library
--- Luau / Roblox Studio friendly UI library.
+-- Loadstring / Roblox executor friendly UI library.
 
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -15,6 +15,26 @@ local PANEL = Color3.fromRGB(39, 40, 52)
 local STROKE = Color3.fromRGB(55, 56, 74)
 local TEXT = Color3.fromRGB(219, 219, 228)
 local MUTED = Color3.fromRGB(139, 139, 153)
+
+local function getDefaultParent()
+	local ok, hiddenUi = pcall(function()
+		return gethui()
+	end)
+
+	if ok and hiddenUi then
+		return hiddenUi
+	end
+
+	local coreOk, coreGui = pcall(function()
+		return game:GetService("CoreGui")
+	end)
+
+	if coreOk and coreGui then
+		return coreGui
+	end
+
+	return game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+end
 
 local function tween(object, time, props, style, direction)
 	local info = TweenInfo.new(
@@ -79,9 +99,12 @@ end
 local function clickFlash(object, baseColor)
 	local basePosition = object.Position
 	local base = baseColor or object.BackgroundColor3
+	local baseTransparency = object.BackgroundTransparency
+	local flashTransparency = baseTransparency >= 0.9 and 0.78 or baseTransparency
 
 	tween(object, 0.1, {
 		BackgroundColor3 = RED_LIGHT,
+		BackgroundTransparency = flashTransparency,
 		Position = basePosition + UDim2.new(0, 7, 0, 0)
 	})
 
@@ -89,6 +112,7 @@ local function clickFlash(object, baseColor)
 		if object and object.Parent then
 			tween(object, 0.18, {
 				BackgroundColor3 = base,
+				BackgroundTransparency = baseTransparency,
 				Position = basePosition
 			})
 		end
@@ -141,7 +165,7 @@ function Library.new(config)
 	screenGui.ResetOnSpawn = false
 	screenGui.IgnoreGuiInset = true
 	screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	screenGui.Parent = config.Parent or game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+	screenGui.Parent = config.Parent or getDefaultParent()
 	self.Gui = screenGui
 
 	local main = Instance.new("Frame")
@@ -149,7 +173,7 @@ function Library.new(config)
 	main.BackgroundColor3 = BG
 	main.BorderSizePixel = 0
 	main.Position = config.Position or UDim2.new(0, 14, 0, 24)
-	main.Size = config.Size or UDim2.new(0, 610, 0, 446)
+	main.Size = config.Size or UDim2.new(0, 612, 0, 446)
 	main.Parent = screenGui
 	self.Main = main
 	addStroke(main, Color3.fromRGB(67, 68, 84), 1)
@@ -164,6 +188,14 @@ function Library.new(config)
 
 	local title = makeLabel(topbar, self.Name, 12, UDim2.new(0, 0, 0, 0), TEXT, Enum.TextXAlignment.Center)
 	title.Size = UDim2.new(1, 0, 1, 0)
+
+	local accentLine = Instance.new("Frame")
+	accentLine.Name = "AccentLine"
+	accentLine.BackgroundColor3 = self.Accent
+	accentLine.BorderSizePixel = 0
+	accentLine.Position = UDim2.new(1, -7, 0, 21)
+	accentLine.Size = UDim2.new(0, 5, 0, 2)
+	accentLine.Parent = main
 
 	local sidebar = Instance.new("Frame")
 	sidebar.Name = "Sidebar"
@@ -212,7 +244,7 @@ function Library:CreateTab(name, icon)
 	tabButton.Font = Enum.Font.Code
 	tabButton.Text = (icon and (icon .. "\n") or "") .. name
 	tabButton.TextColor3 = MUTED
-	tabButton.TextSize = 13
+	tabButton.TextSize = 12
 	tabButton.Size = UDim2.new(1, -18, 0, 72)
 	tabButton.Parent = self.Sidebar
 	tab.Button = tabButton
@@ -231,7 +263,7 @@ function Library:CreateTab(name, icon)
 	section.BackgroundColor3 = Color3.fromRGB(36, 37, 49)
 	section.BorderSizePixel = 0
 	section.Position = UDim2.new(0, 0, 0, 0)
-	section.Size = UDim2.new(0, 238, 0, 178)
+	section.Size = UDim2.new(0, 238, 0, 179)
 	section.Parent = page
 	addStroke(section, Color3.fromRGB(50, 51, 68), 1)
 	tab.Section = section
@@ -242,7 +274,7 @@ function Library:CreateTab(name, icon)
 	list.Parent = section
 
 	local padding = Instance.new("UIPadding")
-	padding.PaddingTop = UDim.new(0, 18)
+	padding.PaddingTop = UDim.new(0, 17)
 	padding.PaddingLeft = UDim.new(0, 7)
 	padding.PaddingRight = UDim.new(0, 7)
 	padding.Parent = section
@@ -410,7 +442,7 @@ function Library:CreateTab(name, icon)
 
 		local button = makeButton(section, options.Text or (items[index] or "Dropdown"), 18)
 		button.TextXAlignment = Enum.TextXAlignment.Left
-		button.Text = (items[index] or options.Text or "Dropdown") .. "                         +"
+		button.Text = (items[index] or options.Text or "Dropdown") .. "                              +"
 
 		button.MouseButton1Click:Connect(function()
 			index += 1
@@ -419,7 +451,7 @@ function Library:CreateTab(name, icon)
 			end
 
 			local selected = items[index] or options.Text or "Dropdown"
-			button.Text = selected .. "                         +"
+			button.Text = selected .. "                              +"
 			clickFlash(button, PANEL)
 			callback(selected)
 		end)
