@@ -119,9 +119,9 @@ end
 
 local tabSymbols = {
 	-- Use text like "A" or an asset id like "rbxassetid://123456789".
-	Aimbot = "A",
-	Visuals = "V",
-	Misc = "M",
+	Aimbot = "4391741881",
+	Visuals = "1137376343",
+	Misc = "123657916614517",
 }
 
 local function symbolToImage(symbol)
