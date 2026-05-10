@@ -84,14 +84,15 @@ function Fun.Create(title)
     mainCorner.Name = "mainCorner"
     mainCorner.Parent = mainFrame
 
+    -- Sidebar agora fica em baixo (footer)
     mainSide.Name = "mainSide"
     mainSide.Parent = mainFrame
     mainSide.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
-    mainSide.Size = UDim2.new(0, 166, 0, 396)
+    mainSide.Size = UDim2.new(0, 475, 0, 50) -- Altura reduzida para ficar em baixo
+    mainSide.Position = UDim2.new(0, 0, 1, -50) -- Grudado na parte inferior
 
     UICorner.CornerRadius = UDim.new(0, 6)
     UICorner.Parent = mainSide
-
 
     game:GetService("UserInputService").InputBegan:connect(function(current) 
             if current.KeyCode.Name == Enum.KeyCode.LeftAlt.Name then 
@@ -107,12 +108,12 @@ function Fun.Create(title)
     nightmares.Parent = mainSide
     nightmares.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     nightmares.BackgroundTransparency = 1.000
-    nightmares.Position = UDim2.new(0.0499999262, 0, 0.0228203665, 0)
+    nightmares.Position = UDim2.new(0.02, 0, 0.1, 0)
     nightmares.Size = UDim2.new(0, 103, 0, 28)
     nightmares.TextXAlignment = Enum.TextXAlignment.Left
     nightmares.Font = Enum.Font.Gotham
     nightmares.Text = " "..title
-    nightmares.TextColor3 = Color3.fromRGB(92, 53, 93)
+    nightmares.TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
     nightmares.TextSize = 20.000
     nightmares.TextWrapped = true
 
@@ -134,25 +135,30 @@ function Fun.Create(title)
     cover.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
     cover.BorderSizePixel = 0
     cover.Position = UDim2.new(0.949999988, 0, 0, 0)
-    cover.Size = UDim2.new(0, 9, 0, 396)
+    cover.Size = UDim2.new(0, 9, 0, 50)
+    cover.Visible = false -- Esconder cover pois agora é horizontal
 
+    -- Abas agora ficam na parte inferior (horizontal)
     allTabs.Name = "allTabs"
     allTabs.Parent = mainSide
     allTabs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     allTabs.BackgroundTransparency = 1.000
-    allTabs.Position = UDim2.new(0.0499999262, 0, 0.108294941, 0)
-    allTabs.Size = UDim2.new(0, 149, 0, 344)
+    allTabs.Position = UDim2.new(0.15, 0, 0.05, 0) -- Posicionado à direita do título
+    allTabs.Size = UDim2.new(0, 350, 0, 40)
 
     tabList.Name = "tabList"
     tabList.Parent = allTabs
     tabList.SortOrder = Enum.SortOrder.LayoutOrder
+    tabList.FillDirection = Enum.FillDirection.Horizontal -- Horizontal agora
+    tabList.Padding = UDim.new(0, 5)
 
+    -- Páginas agora ocupam todo o espaço (sem sidebar)
     allPages.Name = "allPages"
     allPages.Parent = mainFrame
     allPages.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     allPages.BackgroundTransparency = 1.000
-    allPages.Position = UDim2.new(0.366315782, 0, 0.017676767, 0)
-    allPages.Size = UDim2.new(0, 295, 0, 381)
+    allPages.Position = UDim2.new(0.02, 0, 0.02, 0)
+    allPages.Size = UDim2.new(0, 455, 0, 370) -- Expandido para ocupar espaço da sidebar
 
     pages.Name = "pages"
     pages.Parent = allPages
@@ -168,7 +174,7 @@ function Fun.Create(title)
         tabButton.Parent = allTabs
         tabButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         tabButton.BackgroundTransparency = 1.000
-        tabButton.Size = UDim2.new(0, 149, 0, 35)
+        tabButton.Size = UDim2.new(0, 80, 0, 35)
         tabButton.Font = Enum.Font.Gotham
         tabButton.Text = tabText
         tabButton.TextColor3 = Color3.fromRGB(87, 87, 104)
@@ -183,7 +189,7 @@ function Fun.Create(title)
         newPage.BorderSizePixel = 0
         newPage.Size = UDim2.new(1, 0, 1, 0)
         newPage.ScrollBarThickness = 6
-        newPage.ScrollBarImageColor3 = Color3.fromRGB(127, 97, 145)
+        newPage.ScrollBarImageColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
         newPage.Visible = false
 
         local sectionListing = Instance.new("UIListLayout")    
@@ -216,7 +222,7 @@ function Fun.Create(title)
                 end
             end
             game.TweenService:Create(tabButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
-                TextColor3 = Color3.fromRGB(127, 97, 145)
+                TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
             }):Play()
             ----------------------
             --Page Functioning
@@ -248,7 +254,7 @@ function Fun.Create(title)
             sectionFrame.Parent = newPage
             sectionFrame.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
             sectionFrame.Position = UDim2.new(0, 0, -8.009863e-08, 0)
-            sectionFrame.Size = UDim2.new(0.9559322, 0, 0, 36)
+            sectionFrame.Size = UDim2.new(0.99, 0, 0, 36)
             sectionFrame.ClipsDescendants = true
 
             UICorner.Parent = sectionFrame
@@ -269,7 +275,7 @@ function Fun.Create(title)
             sectionCircle.Name = "sectionCircle"
             sectionCircle.Parent = sectionFrameHead
             sectionCircle.BackgroundColor3 = Color3.fromRGB(82, 82, 98)
-            sectionCircle.Position = UDim2.new(0.0354609936, 0, 0.388888896, 0)
+            sectionCircle.Position = UDim2.new(0.02, 0, 0.388888896, 0)
             sectionCircle.Size = UDim2.new(0, 7, 0, 7)
 
             UICorner_3.CornerRadius = UDim.new(0, 99)
@@ -278,7 +284,7 @@ function Fun.Create(title)
             TextLabel.Parent = sectionFrameHead
             TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             TextLabel.BackgroundTransparency = 1.000
-            TextLabel.Position = UDim2.new(0.0992907807, 0, 0.194444448, 0)
+            TextLabel.Position = UDim2.new(0.07, 0, 0.194444448, 0)
             TextLabel.Size = UDim2.new(0, 173, 0, 22)
             TextLabel.Font = Enum.Font.Gotham
             TextLabel.Text = sectionName
@@ -291,7 +297,7 @@ function Fun.Create(title)
             closeSection.Name = "closeSection"
             closeSection.Parent = sectionFrameHead
             closeSection.BackgroundTransparency = 1.000
-            closeSection.Position = UDim2.new(0.889999986, 0, 0.155000001, 0)
+            closeSection.Position = UDim2.new(0.96, 0, 0.155000001, 0)
             closeSection.Size = UDim2.new(0, 25, 0, 25)
             closeSection.ZIndex = 2
             closeSection.Image = "rbxassetid://3926305904"
@@ -301,7 +307,7 @@ function Fun.Create(title)
             closeSection.MouseButton1Click:Connect(function()
                 if isDropped then
                     isDropped = false
-                    sectionFrame:TweenSize(UDim2.new(0.956, 0,0, 36), "In", "Linear", 0.10)
+                    sectionFrame:TweenSize(UDim2.new(0.99, 0,0, 36), "In", "Linear", 0.10)
                     game.TweenService:Create(closeSection, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
                         Rotation = 0,
                         ImageColor3 = Color3.fromRGB(82, 82, 98)
@@ -316,16 +322,16 @@ function Fun.Create(title)
                     UpdateSize()
                 else
                     isDropped = true
-                    sectionFrame:TweenSize(UDim2.new(0.956,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "In", "Linear", 0.10)
+                    sectionFrame:TweenSize(UDim2.new(0.99,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "In", "Linear", 0.10)
                     game.TweenService:Create(closeSection, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
                         Rotation = 180,
-                        ImageColor3 = Color3.fromRGB(127, 97, 145)
+                        ImageColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     }):Play()
                     game.TweenService:Create(sectionCircle, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
-                        BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                        BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     }):Play()
                     game.TweenService:Create(TextLabel, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
-                        TextColor3 = Color3.fromRGB(127, 97, 145)
+                        TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     }):Play()
                     wait(0.10)
                     UpdateSize()
@@ -349,7 +355,7 @@ function Fun.Create(title)
                 buttonFrame.Parent = sectionFrame
                 buttonFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 buttonFrame.BackgroundTransparency = 1.000
-                buttonFrame.Position = UDim2.new(0.0354609936, 0, 0.168103442, 0)
+                buttonFrame.Position = UDim2.new(0.02, 0, 0.168103442, 0)
                 buttonFrame.Size = UDim2.new(0, 262, 0, 31)
 
                 UIListLayout.Parent = buttonFrame
@@ -358,7 +364,7 @@ function Fun.Create(title)
                 UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 
                 TextButton.Parent = buttonFrame
-                TextButton.BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                TextButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                 TextButton.Position = UDim2.new(0.118320614, 0, -0.0813953504, 0)
                 TextButton.Size = UDim2.new(0, 262,0, 31)
                 TextButton.AutoButtonColor = false
@@ -412,12 +418,12 @@ function Fun.Create(title)
                     if callBackDebounce then
                         mouseleft = false
                         game.TweenService:Create(TextButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{
-                            BackgroundColor3 = Color3.fromRGB(73, 56, 84)
+                            BackgroundColor3 = Color3.fromRGB(150, 30, 30) -- Vermelho escuro
                         }):Play()
                     else
                         mouseleft = false
                         game.TweenService:Create(TextButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{
-                            BackgroundColor3 = Color3.fromRGB(98, 75, 113)
+                            BackgroundColor3 = Color3.fromRGB(180, 40, 40) -- Vermelho médio
                         }):Play()
                     end
                 end)
@@ -429,7 +435,7 @@ function Fun.Create(title)
                             TextSize = 14
                         }):Play()
                         game.TweenService:Create(TextButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{
-                            BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                            BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                         }):Play()
                     else
                         mouseleft = true
@@ -438,7 +444,7 @@ function Fun.Create(title)
                             TextSize = 14
                         }):Play()
                         game.TweenService:Create(TextButton, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),{
-                            BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                            BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                         }):Play()
                     end
                 end)
@@ -456,7 +462,7 @@ function Fun.Create(title)
                 toggleFrame.Parent = sectionFrame
                 toggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 toggleFrame.BackgroundTransparency = 1.000
-                toggleFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
+                toggleFrame.Position = UDim2.new(0.02, 0, 0.344827592, 0)
                 toggleFrame.Size = UDim2.new(0, 262, 0, 25)
 
                 checkBox.Name = "checkBox"
@@ -498,7 +504,7 @@ function Fun.Create(title)
                         }):Play()
                     else
                         game.TweenService:Create(checkBox, TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
-                            ImageColor3 = Color3.fromRGB(89, 68, 102)
+                            ImageColor3 = Color3.fromRGB(160, 40, 40) -- Vermelho
                         }):Play()
                     end
                 end)
@@ -512,7 +518,7 @@ function Fun.Create(title)
                     else
                         checkBox.Parent:TweenSize(UDim2.new(0, 262,0, 25), "InOut", "Linear", 0.08)
                         game.TweenService:Create(checkBox, TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
-                            ImageColor3 = Color3.fromRGB(127, 97, 145)
+                            ImageColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                         }):Play()
                     end
                 end)
@@ -536,11 +542,11 @@ function Fun.Create(title)
                         callback(tog)
                         if tog then
                             game.TweenService:Create(checkBox.Parent.checkBoxInfo, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
-                                TextColor3 = Color3.fromRGB(127, 97, 145)
+                                TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                             }):Play()
                             checkBox.ImageRectOffset = Vector2.new(4, 836)
                             game.TweenService:Create(checkBox, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
-                                ImageColor3 = Color3.fromRGB(127, 97, 145)
+                                ImageColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                             }):Play()
                         else
                             game.TweenService:Create(checkBox.Parent.checkBoxInfo, TweenInfo.new(0.1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
@@ -569,7 +575,7 @@ function Fun.Create(title)
                     textBoxFrame.Parent = sectionFrame
                     textBoxFrame.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
                     textBoxFrame.BackgroundTransparency = 1.000
-                    textBoxFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
+                    textBoxFrame.Position = UDim2.new(0.02, 0, 0.344827592, 0)
                     textBoxFrame.Size = UDim2.new(0, 262, 0, 28)
 
                     UIListLayout.Parent = textBoxFrame
@@ -587,7 +593,7 @@ function Fun.Create(title)
                     TextBox.Font = Enum.Font.SourceSans
                     TextBox.PlaceholderText = textInfo
                     TextBox.Text = ""
-                    TextBox.TextColor3 = Color3.fromRGB(127, 97, 145)
+                    TextBox.TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     TextBox.TextSize = 16.000
                     TextBox.TextWrapped = true
 
@@ -634,7 +640,7 @@ function Fun.Create(title)
                     sliderFrame.Parent = sectionFrame
                     sliderFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                     sliderFrame.BackgroundTransparency = 1.000
-                    sliderFrame.Position = UDim2.new(0.0354609936, 0, 0.658653855, 0)
+                    sliderFrame.Position = UDim2.new(0.02, 0, 0.658653855, 0)
                     sliderFrame.Size = UDim2.new(0, 262, 0, 32)
 
                     sliderIinfo.Name = "sliderIinfo"
@@ -645,7 +651,7 @@ function Fun.Create(title)
                     sliderIinfo.Size = UDim2.new(0, 169, 0, 18)
                     sliderIinfo.Font = Enum.Font.Gotham
                     sliderIinfo.Text = sliderInf
-                    sliderIinfo.TextColor3 = Color3.fromRGB(127, 97, 145)
+                    sliderIinfo.TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     sliderIinfo.TextSize = 14.000
                     sliderIinfo.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -668,8 +674,8 @@ function Fun.Create(title)
 
                     SliderDrag.Name = "SliderDrag"
                     SliderDrag.Parent = sliderBtn
-                    SliderDrag.BackgroundColor3 = Color3.fromRGB(127, 97, 145)
-                    SliderDrag.BorderColor3 = Color3.fromRGB(127, 97, 145)
+                    SliderDrag.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
+                    SliderDrag.BorderColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     SliderDrag.BorderSizePixel = 0
                     SliderDrag.Size = UDim2.new(0, 0, 0, 9)
 
@@ -837,7 +843,7 @@ function Fun.Create(title)
                     TextLabel.Parent = sectionFrame
                     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                     TextLabel.BackgroundTransparency = 1.000
-                    TextLabel.Position = UDim2.new(0.0390070938, 0, 0.826923072, 0)
+                    TextLabel.Position = UDim2.new(0.02, 0, 0.826923072, 0)
                     TextLabel.Size = UDim2.new(0, 260, 0, 27)
                     TextLabel.Font = Enum.Font.Gotham
                     TextLabel.Text = txtLabel
@@ -861,7 +867,7 @@ function Fun.Create(title)
                     keybindFrame.Parent = sectionFrame
                     keybindFrame.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
                     keybindFrame.BackgroundTransparency = 1.000
-                    keybindFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
+                    keybindFrame.Position = UDim2.new(0.02, 0, 0.344827592, 0)
                     keybindFrame.Size = UDim2.new(0, 262, 0, 33)
 
                     UIListLayout.Parent = keybindFrame
@@ -891,7 +897,7 @@ function Fun.Create(title)
                     TextLabel.Size = UDim2.new(0, 155, 0, 12)
                     TextLabel.Font = Enum.Font.Gotham
                     TextLabel.Text = "KeyBind"
-                    TextLabel.TextColor3 = Color3.fromRGB(127, 97, 145)
+                    TextLabel.TextColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     TextLabel.TextSize = 14.000
                     TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -934,12 +940,12 @@ function Fun.Create(title)
                     dropdownFrame.Parent = sectionFrame
                     dropdownFrame.BackgroundColor3 = Color3.fromRGB(48, 48, 58)
                     dropdownFrame.ClipsDescendants = true
-                    dropdownFrame.Position = UDim2.new(0.0354609936, 0, 0.495833337, 0)
+                    dropdownFrame.Position = UDim2.new(0.02, 0, 0.495833337, 0)
                     dropdownFrame.Size = UDim2.new(0, 262, 0, 28)
 
                     dropdownFrameHeader.Name = "dropdownFrameHeader"
                     dropdownFrameHeader.Parent = dropdownFrame
-                    dropdownFrameHeader.BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                    dropdownFrameHeader.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                     dropdownFrameHeader.Size = UDim2.new(0, 262, 0, 28)
 
                     UICorner.CornerRadius = UDim.new(0, 5)
@@ -975,7 +981,7 @@ function Fun.Create(title)
                                 Rotation = 0
                             }):Play()
                             wait(0.1)
-                            sectionFrame:TweenSize(UDim2.new(0.956,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
+                            sectionFrame:TweenSize(UDim2.new(0.99,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
                             wait(0.1)
                             game.TweenService:Create(dropcover, TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
                                 BackgroundTransparency = 1
@@ -989,7 +995,7 @@ function Fun.Create(title)
                                 Rotation = 180
                             }):Play()
                             wait(0.1)
-                            sectionFrame:TweenSize(UDim2.new(0.956,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
+                            sectionFrame:TweenSize(UDim2.new(0.99,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
                             wait(0.1)
                             game.TweenService:Create(dropcover, TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
                                 BackgroundTransparency = 0
@@ -1038,7 +1044,7 @@ function Fun.Create(title)
                             DropYSize = DropYSize + 33
                             optionButton.Name = "optionButton"
                             optionButton.Parent = dropdownButton
-                            optionButton.BackgroundColor3 = Color3.fromRGB(127, 97, 145)
+                            optionButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
                             optionButton.BorderSizePixel = 0
                             optionButton.Position = UDim2.new(0.0667938963, 0, -0.418119699, 0)
                             optionButton.Size = UDim2.new(0, 251, 0, 28)
@@ -1057,7 +1063,7 @@ function Fun.Create(title)
                                     Rotation = 0
                                 }):Play()
                                 wait(0.1)
-                                sectionFrame:TweenSize(UDim2.new(0.956,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
+                                sectionFrame:TweenSize(UDim2.new(0.99,0, 0, sectionListLayout.AbsoluteContentSize.Y + 8), "InOut", "Linear", 0.1)
                                 wait(0.1)
                                 game.TweenService:Create(dropcover, TweenInfo.new(0.08, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut), {
                                     BackgroundTransparency = 1
