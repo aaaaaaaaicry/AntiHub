@@ -1,10 +1,12 @@
+-- CÓDIGO COMPLETO - Copie e cole tudo no executor
+
 local lib = {RainbowColorValue = 0, HueSelectionPosition = 0}
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
-local PresetColor = Color3.fromRGB(200, 50, 50) -- Vermelho
+local PresetColor = Color3.fromRGB(200, 50, 50)
 local CloseBind = Enum.KeyCode.RightControl
 
 local ui = Instance.new("ScreenGui")
@@ -87,12 +89,12 @@ end
 
 function lib:Window(text, preset, closebind)
     CloseBind = closebind or Enum.KeyCode.RightControl
-    PresetColor = preset or Color3.fromRGB(200, 50, 50) -- Vermelho
+    PresetColor = preset or Color3.fromRGB(200, 50, 50)
     fs = false
     local Main = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
     local DragFrame = Instance.new("Frame")
-    local BottomBar = Instance.new("Frame") -- Barra inferior para abas
+    local BottomBar = Instance.new("Frame")
     local TabHold = Instance.new("Frame")
     local TabHoldLayout = Instance.new("UIListLayout")
     local TabFolder = Instance.new("Folder")
@@ -107,10 +109,9 @@ function lib:Window(text, preset, closebind)
     Main.ClipsDescendants = true
     Main.Visible = true
 
-    -- Barra de arrasto no topo
     DragFrame.Name = "DragFrame"
     DragFrame.Parent = Main
-    DragFrame.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Vermelho
+    DragFrame.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
     DragFrame.Size = UDim2.new(1, 0, 0, 30)
     DragFrame.Position = UDim2.new(0, 0, 0, 0)
     
@@ -129,7 +130,6 @@ function lib:Window(text, preset, closebind)
     Title.TextSize = 12.000
     Title.TextXAlignment = Enum.TextXAlignment.Center
 
-    -- Barra inferior para as abas
     BottomBar.Name = "BottomBar"
     BottomBar.Parent = Main
     BottomBar.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
@@ -140,7 +140,6 @@ function lib:Window(text, preset, closebind)
     BottomBarCorner.CornerRadius = UDim.new(0, 6)
     BottomBarCorner.Parent = BottomBar
 
-    -- Container das abas (agora na barra inferior)
     TabHold.Name = "TabHold"
     TabHold.Parent = BottomBar
     TabHold.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -197,7 +196,6 @@ function lib:Window(text, preset, closebind)
 
     function lib:ChangePresetColor(toch)
         PresetColor = toch
-        -- Atualiza cor da barra de arrasto
         DragFrame.BackgroundColor3 = PresetColor
     end
 
@@ -465,6 +463,7 @@ function lib:Window(text, preset, closebind)
         )
         
         local tabcontent = {}
+        
         function tabcontent:Button(text, callback)
             local Button = Instance.new("TextButton")
             local ButtonCorner = Instance.new("UICorner")
@@ -1704,47 +1703,54 @@ function lib:Window(text, preset, closebind)
     end
     return tabhold
 end
-return lib
 
--- Exemplo de uso:
-local lib = loadstring(game:HttpGet("url"))() -- Substitua pela URL real
+-- EXEMPLO DE USO (copie isso também)
 
-local win = lib:Window("NIGHTMARE", Color3.fromRGB(200, 50, 50), Enum.KeyCode.RightControl)
+local win = lib:Window("NIGHTMARE UI", Color3.fromRGB(200, 50, 50), Enum.KeyCode.RightControl)
 
-local tab = win:Tab("Principal")
+-- Aba Principal
+local mainTab = win:Tab("Principal")
 
-tab:Button("Botão", function()
-    lib:Notification("Notificação", "Olá mundo!", "OK")
+mainTab:Button("Clique Aqui", function()
+    lib:Notification("Notificação", "Botão foi clicado!", "OK")
+    print("Botão clicado!")
 end)
 
-tab:Toggle("Alternar", false, function(t)
-    print("Toggle:", t)
+mainTab:Toggle("Ligar/Desligar", false, function(t)
+    print("Toggle estado:", t)
 end)
 
-tab:Slider("Deslizante", 0, 100, 50, function(t)
-    print("Slider:", t)
+mainTab:Slider("Volume", 0, 100, 50, function(t)
+    print("Volume:", t)
 end)
 
-tab:Dropdown("Dropdown", {"Opção 1", "Opção 2", "Opção 3"}, function(t)
-    print("Dropdown:", t)
+mainTab:Dropdown("Selecione uma opção", {"Opção 1", "Opção 2", "Opção 3"}, function(t)
+    print("Dropdown selecionou:", t)
 end)
 
-tab:Colorpicker("Seletor de Cor", Color3.fromRGB(200, 50, 50), function(t)
+mainTab:Colorpicker("Cor do Elemento", Color3.fromRGB(200, 50, 50), function(t)
     print("Cor selecionada:", t)
 end)
 
-tab:Textbox("Caixa de Texto", true, function(t)
-    print("Texto:", t)
+mainTab:Textbox("Digite algo", true, function(t)
+    print("Texto digitado:", t)
 end)
 
-tab:Bind("Tecla de Atalho", Enum.KeyCode.RightShift, function()
-    print("Tecla pressionada!")
+mainTab:Bind("Atalho", Enum.KeyCode.RightShift, function()
+    print("Atalho pressionado!")
 end)
 
-tab:Label("Rótulo de exemplo")
+mainTab:Label("--- Informação ---")
 
-local uiTab = win:Tab("UI")
+-- Aba Aparência
+local uiTab = win:Tab("Aparência")
 
-uiTab:Colorpicker("Cor da UI", Color3.fromRGB(200, 50, 50), function(t)
+uiTab:Colorpicker("Cor da Interface", Color3.fromRGB(200, 50, 50), function(t)
     lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+uiTab:Label("Use o seletor acima para\nmudar a cor da UI")
+
+uiTab:Button("Testar Notificação", function()
+    lib:Notification("Teste", "Isso é uma notificação de teste!", "Fechar")
 end)
