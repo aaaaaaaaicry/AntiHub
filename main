@@ -10,35 +10,25 @@ local HttpService = game:GetService("HttpService")
 local player = Players.LocalPlayer
 
 local function getLocalPlayerName()
-	if not player then
-		return "Player"
-	end
+	if not player then return "Player" end
 	return player.DisplayName or player.Name or "Player"
 end
 
 local function getLocalPlayerHandle()
-	if not player then
-		return "@player"
-	end
+	if not player then return "@player" end
 	return "@" .. tostring(player.Name or "player")
 end
 
 local function getGuiParent()
 	if typeof(gethui) == "function" then
 		local ok, hui = pcall(gethui)
-		if ok and hui then
-			return hui
-		end
+		if ok and hui then return hui end
 	end
 	if player then
 		local playerGui = player:FindFirstChildOfClass("PlayerGui")
-		if playerGui then
-			return playerGui
-		end
+		if playerGui then return playerGui end
 	end
-	local ok, coreGui = pcall(function()
-		return game:GetService("CoreGui")
-	end)
+	local ok, coreGui = pcall(function() return game:GetService("CoreGui") end)
 	return ok and coreGui or nil
 end
 
@@ -543,29 +533,170 @@ local function createSlider(parent, key, label, min, max, default, suffix, callb
 	return r
 end
 
-local colorPickers = {}
-updateAccent = function(color)
-	state.accent = color
-	for _, data in ipairs(colorPickers) do
-		data.swatch.BackgroundColor3 = color
-		data.value.Text = "#" .. color:ToHex():lower()
-	end
-	for _, callback in ipairs(accentUpdaters) do task.spawn(callback) end
-end
+-- COLOR PICKER VERDADEIRO COM RGB SLIDERS
+local activeColorPicker = nil
 
 local function createColorPicker(parent, label, defaultColor)
-	local r = row(parent, 34)
-	new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamMedium, Position = UDim2.fromOffset(4, 0), Size = UDim2.new(1, -96, 1, 0), Text = label, TextColor3 = Color3.fromRGB(213, 214, 219), TextSize = 13, TextXAlignment = Enum.TextXAlignment.Left, Parent = r })
-	local value = new("TextLabel", { AnchorPoint = Vector2.new(1, 0.5), BackgroundColor3 = theme.panel, BorderSizePixel = 0, Font = Enum.Font.GothamMedium, Position = UDim2.new(1, -41, 0.5, 0), Size = UDim2.fromOffset(61, 28), Text = "#" .. defaultColor:ToHex():lower(), TextColor3 = Color3.fromRGB(210, 212, 218), TextSize = 12, Parent = r }, { corner(4) })
-	local swatch = new("TextButton", { AnchorPoint = Vector2.new(1, 0.5), AutoButtonColor = false, BackgroundColor3 = defaultColor, BorderSizePixel = 0, Position = UDim2.new(1, -7, 0.5, 0), Size = UDim2.fromOffset(16, 16), Text = "", Parent = r }, { corner(8), stroke(Color3.fromRGB(220, 222, 227), 0.65, 1) })
-	local palette = new("Frame", { AnchorPoint = Vector2.new(1, 0), BackgroundColor3 = theme.panel, BorderSizePixel = 0, Position = UDim2.new(1, -4, 1, 2), Size = UDim2.fromOffset(142, 32), Visible = false, ZIndex = 30, Parent = r }, { corner(5), stroke(theme.stroke, 0.45, 1), padding(6, 6, 6, 6), new("UIListLayout", { FillDirection = Enum.FillDirection.Horizontal, Padding = UDim.new(0, 6), SortOrder = Enum.SortOrder.LayoutOrder }) })
-	local colors = { Color3.fromRGB(146, 154, 171), Color3.fromRGB(117, 174, 129), Color3.fromRGB(218, 170, 91), Color3.fromRGB(196, 111, 128), Color3.fromRGB(116, 164, 204) }
-	for index, color in ipairs(colors) do
-		local item = new("TextButton", { AutoButtonColor = false, BackgroundColor3 = color, BorderSizePixel = 0, LayoutOrder = index, Size = UDim2.fromOffset(19, 19), Text = "", ZIndex = 31, Parent = palette }, { corner(10) })
-		item.MouseButton1Click:Connect(function() updateAccent(color) palette.Visible = false end)
+	local r = row(parent, 55)
+	
+	new("TextLabel", { 
+		BackgroundTransparency = 1, 
+		Font = Enum.Font.GothamMedium, 
+		Position = UDim2.fromOffset(4, 0), 
+		Size = UDim2.new(1, -96, 0, 20), 
+		Text = label, 
+		TextColor3 = Color3.fromRGB(213, 214, 219), 
+		TextSize = 13, 
+		TextXAlignment = Enum.TextXAlignment.Left, 
+		Parent = r 
+	})
+	
+	local colorValue = defaultColor or Color3.fromRGB(255, 255, 255)
+	
+	local valueText = new("TextLabel", { 
+		AnchorPoint = Vector2.new(1, 0), 
+		BackgroundColor3 = theme.panel, 
+		BorderSizePixel = 0, 
+		Font = Enum.Font.GothamMedium, 
+		Position = UDim2.new(1, -41, 0, 0), 
+		Size = UDim2.fromOffset(61, 22), 
+		Text = "#" .. colorValue:ToHex():lower(), 
+		TextColor3 = Color3.fromRGB(210, 212, 218), 
+		TextSize = 11, 
+		Parent = r 
+	}, { corner(4) })
+	
+	local swatch = new("TextButton", { 
+		AnchorPoint = Vector2.new(1, 0.5), 
+		AutoButtonColor = false, 
+		BackgroundColor3 = colorValue, 
+		BorderSizePixel = 0, 
+		Position = UDim2.new(1, -7, 0.5, 0), 
+		Size = UDim2.fromOffset(22, 22), 
+		Text = "", 
+		Parent = r 
+	}, { corner(4), stroke(Color3.fromRGB(220, 222, 227), 0.65, 1) })
+	
+	-- Painel do ColorPicker
+	local pickerPanel = new("Frame", {
+		BackgroundColor3 = theme.panel2,
+		BorderSizePixel = 0,
+		Position = UDim2.fromOffset(0, 58),
+		Size = UDim2.new(1, 0, 0, 110),
+		Visible = false,
+		Parent = r,
+	}, { corner(4), stroke(theme.stroke, 0.55, 1), padding(8, 8, 8, 8) })
+	
+	-- Slider R
+	local rFrame = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 25), Parent = pickerPanel })
+	new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Size = UDim2.fromOffset(20, 25), Text = "R", TextColor3 = Color3.fromRGB(255, 80, 80), TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, Parent = rFrame })
+	local rTrack = new("TextButton", { AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(40, 40, 40), BorderSizePixel = 0, Position = UDim2.fromOffset(25, 10), Size = UDim2.new(1, -95, 0, 3), Text = "", Parent = rFrame })
+	local rFill = new("Frame", { BackgroundColor3 = Color3.fromRGB(255, 80, 80), BorderSizePixel = 0, Size = UDim2.fromScale(colorValue.R, 1), Parent = rTrack })
+	local rKnob = new("Frame", { AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Position = UDim2.fromScale(colorValue.R, 0.5), Size = UDim2.fromOffset(10, 10), Parent = rTrack }, { corner(5) })
+	local rValue = new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Position = UDim2.new(1, -30, 0, 0), Size = UDim2.fromOffset(30, 25), Text = tostring(math.floor(colorValue.R * 255)), TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 10, TextXAlignment = Enum.TextXAlignment.Right, Parent = rFrame })
+	
+	-- Slider G
+	local gFrame = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 25), Parent = pickerPanel })
+	new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Size = UDim2.fromOffset(20, 25), Text = "G", TextColor3 = Color3.fromRGB(80, 255, 80), TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, Parent = gFrame })
+	local gTrack = new("TextButton", { AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(40, 40, 40), BorderSizePixel = 0, Position = UDim2.fromOffset(25, 10), Size = UDim2.new(1, -95, 0, 3), Text = "", Parent = gFrame })
+	local gFill = new("Frame", { BackgroundColor3 = Color3.fromRGB(80, 255, 80), BorderSizePixel = 0, Size = UDim2.fromScale(colorValue.G, 1), Parent = gTrack })
+	local gKnob = new("Frame", { AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Position = UDim2.fromScale(colorValue.G, 0.5), Size = UDim2.fromOffset(10, 10), Parent = gTrack }, { corner(5) })
+	local gValue = new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Position = UDim2.new(1, -30, 0, 0), Size = UDim2.fromOffset(30, 25), Text = tostring(math.floor(colorValue.G * 255)), TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 10, TextXAlignment = Enum.TextXAlignment.Right, Parent = gFrame })
+	
+	-- Slider B
+	local bFrame = new("Frame", { BackgroundTransparency = 1, Size = UDim2.new(1, 0, 0, 25), Parent = pickerPanel })
+	new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Size = UDim2.fromOffset(20, 25), Text = "B", TextColor3 = Color3.fromRGB(80, 80, 255), TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left, Parent = bFrame })
+	local bTrack = new("TextButton", { AutoButtonColor = false, BackgroundColor3 = Color3.fromRGB(40, 40, 40), BorderSizePixel = 0, Position = UDim2.fromOffset(25, 10), Size = UDim2.new(1, -95, 0, 3), Text = "", Parent = bFrame })
+	local bFill = new("Frame", { BackgroundColor3 = Color3.fromRGB(80, 80, 255), BorderSizePixel = 0, Size = UDim2.fromScale(colorValue.B, 1), Parent = bTrack })
+	local bKnob = new("Frame", { AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Color3.fromRGB(255, 255, 255), BorderSizePixel = 0, Position = UDim2.fromScale(colorValue.B, 0.5), Size = UDim2.fromOffset(10, 10), Parent = bTrack }, { corner(5) })
+	local bValue = new("TextLabel", { BackgroundTransparency = 1, Font = Enum.Font.GothamBold, Position = UDim2.new(1, -30, 0, 0), Size = UDim2.fromOffset(30, 25), Text = tostring(math.floor(colorValue.B * 255)), TextColor3 = Color3.fromRGB(255, 255, 255), TextSize = 10, TextXAlignment = Enum.TextXAlignment.Right, Parent = bFrame })
+	
+	local draggingR = false
+	local draggingG = false
+	local draggingB = false
+	
+	local function updateColor()
+		local newColor = Color3.new(colorValue.R, colorValue.G, colorValue.B)
+		swatch.BackgroundColor3 = newColor
+		valueText.Text = "#" .. newColor:ToHex():lower()
 	end
-	swatch.MouseButton1Click:Connect(function() palette.Visible = not palette.Visible end)
-	table.insert(colorPickers, { swatch = swatch, value = value })
+	
+	local function setR(value)
+		value = math.clamp(value, 0, 1)
+		colorValue = Color3.new(value, colorValue.G, colorValue.B)
+		rFill.Size = UDim2.fromScale(value, 1)
+		rKnob.Position = UDim2.fromScale(value, 0.5)
+		rValue.Text = tostring(math.floor(value * 255))
+		updateColor()
+	end
+	
+	local function setG(value)
+		value = math.clamp(value, 0, 1)
+		colorValue = Color3.new(colorValue.R, value, colorValue.B)
+		gFill.Size = UDim2.fromScale(value, 1)
+		gKnob.Position = UDim2.fromScale(value, 0.5)
+		gValue.Text = tostring(math.floor(value * 255))
+		updateColor()
+	end
+	
+	local function setB(value)
+		value = math.clamp(value, 0, 1)
+		colorValue = Color3.new(colorValue.R, colorValue.G, value)
+		bFill.Size = UDim2.fromScale(value, 1)
+		bKnob.Position = UDim2.fromScale(value, 0.5)
+		bValue.Text = tostring(math.floor(value * 255))
+		updateColor()
+	end
+	
+	local function alphaFromInput(track, input)
+		return (input.Position.X - track.AbsolutePosition.X) / math.max(track.AbsoluteSize.X, 1)
+	end
+	
+	rTrack.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			draggingR = true
+			setR(alphaFromInput(rTrack, input))
+		end
+	end)
+	gTrack.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			draggingG = true
+			setG(alphaFromInput(gTrack, input))
+		end
+	end)
+	bTrack.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			draggingB = true
+			setB(alphaFromInput(bTrack, input))
+		end
+	end)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if draggingR and input.UserInputType == Enum.UserInputType.MouseMovement then
+			setR(alphaFromInput(rTrack, input))
+		elseif draggingG and input.UserInputType == Enum.UserInputType.MouseMovement then
+			setG(alphaFromInput(gTrack, input))
+		elseif draggingB and input.UserInputType == Enum.UserInputType.MouseMovement then
+			setB(alphaFromInput(bTrack, input))
+		end
+	end)
+	
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			draggingR = false
+			draggingG = false
+			draggingB = false
+		end
+	end)
+	
+	swatch.MouseButton1Click:Connect(function()
+		if activeColorPicker and activeColorPicker ~= pickerPanel then
+			activeColorPicker.Visible = false
+		end
+		pickerPanel.Visible = not pickerPanel.Visible
+		activeColorPicker = pickerPanel.Visible and pickerPanel or nil
+	end)
+	
 	return r
 end
 
@@ -692,7 +823,6 @@ local AntiHub = {
 	tabs = tabs,
 	window = window,
 	pageHost = pageHost,
-	setAccent = updateAccent,
 	saveConfig = saveConfig,
 	loadConfig = loadConfig,
 }
@@ -710,57 +840,37 @@ function AntiHub:SetRuntimeSetting(key, value) return applyRuntimeSetting(key, v
 
 if typeof(getgenv) == "function" then getgenv().AntiHub = AntiHub end
 
--- Build default UI if no example
-if typeof(getgenv) == "function" and typeof(getgenv().AntiHubExample) == "function" then
-	getgenv().AntiHubExample(AntiHub)
-else
-	-- Default UI builder
-	local main = AntiHub:Page("Main")
-	local combat = AntiHub:Section(main.left, "Combat", 140, 1)
-	AntiHub:Toggle(combat, "aimbot", "Aimbot", true, true)
-	AntiHub:Toggle(combat, "silent", "Silent Aim", true, false)
-	AntiHub:Toggle(combat, "prediction", "Prediction", false, false)
-	
-	local settings = AntiHub:Section(main.left, "Settings", 130, 2)
-	AntiHub:Slider(settings, "smooth", "Smoothness", 0, 100, 70, "%")
-	AntiHub:Slider(settings, "fov", "FOV", 0, 180, 90, "°")
-	
-	local colors = AntiHub:Section(main.left, "Colors", 100, 3)
-	AntiHub:ColorPicker(colors, "Main Color", Color3.fromRGB(255, 50, 50))
-	AntiHub:ColorPicker(colors, "ESP Color", Color3.fromRGB(50, 255, 50))
-	
-	local target = AntiHub:Section(main.right, "Target", 118, 1)
-	AntiHub:Dropdown(target, "priority", "Priority", {"Closest", "Lowest HP", "Highest HP"}, "Closest")
-	AntiHub:Dropdown(target, "hitbox", "Hitbox", {"Head", "Torso", "Arms", "Legs"}, "Head")
-	
-	local visuals = AntiHub:Page("Visuals")
-	local esp = AntiHub:Section(visuals.left, "ESP", 150, 1)
-	AntiHub:Toggle(esp, "esp", "Player ESP", true, false)
-	AntiHub:Toggle(esp, "boxes", "Box ESP", true, false)
-	AntiHub:Toggle(esp, "names", "Name ESP", true, false)
-	AntiHub:Slider(esp, "brightness", "Brightness", 0, 100, 55, "%")
-	
-	local visualColors = AntiHub:Section(visuals.left, "Colors", 80, 2)
-	AntiHub:ColorPicker(visualColors, "Box Color", Color3.fromRGB(0, 150, 255))
-	AntiHub:ColorPicker(visualColors, "Text Color", Color3.fromRGB(255, 255, 255))
-	
-	local misc = AntiHub:Page("Misc")
-	local config = AntiHub:Section(misc.left, "Config", 150, 1)
-	AntiHub:Toggle(config, "watermark", "Watermark", true, false, function(v) AntiHub:SetRuntimeSetting("watermark", v) end)
-	AntiHub:Toggle(config, "keybinds", "Keybinds", true, false, function(v) AntiHub:SetRuntimeSetting("keybinds", v) end)
-	AntiHub:Button(config, "Save Config", nil, function() AntiHub.saveConfig() end)
-	AntiHub:Button(config, "Load Config", nil, function() AntiHub.loadConfig() end)
-	
-	local miscColors = AntiHub:Section(misc.left, "Colors", 80, 2)
-	AntiHub:ColorPicker(miscColors, "UI Accent", Color3.fromRGB(225, 47, 55))
-	
-	local binds = AntiHub:Section(misc.right, "Keybinds", 72, 1)
-	AntiHub:KeyPicker(binds, "bind", "Menu Key", "RightShift", function(v) AntiHub:SetRuntimeSetting("bind", v) end)
-end
+-- Build default UI
+local main = AntiHub:Page("Main")
+local combat = AntiHub:Section(main.left, "Combat", 140, 1)
+AntiHub:Toggle(combat, "aimbot", "Aimbot", true, true)
+AntiHub:Toggle(combat, "silent", "Silent Aim", true, false)
+
+local colors = AntiHub:Section(main.left, "Colors", 80, 2)
+AntiHub:ColorPicker(colors, "Aimbot Color", Color3.fromRGB(255, 0, 0))
+AntiHub:ColorPicker(colors, "ESP Color", Color3.fromRGB(0, 255, 0))
+
+local visuals = AntiHub:Page("Visuals")
+local esp = AntiHub:Section(visuals.left, "ESP", 100, 1)
+AntiHub:Toggle(esp, "esp", "ESP", true, false)
+
+local espColors = AntiHub:Section(visuals.left, "Colors", 80, 2)
+AntiHub:ColorPicker(espColors, "Box Color", Color3.fromRGB(0, 150, 255))
+
+local misc = AntiHub:Page("Misc")
+local config = AntiHub:Section(misc.left, "Config", 120, 1)
+AntiHub:Toggle(config, "watermark", "Watermark", true, false, function(v) AntiHub:SetRuntimeSetting("watermark", v) end)
+AntiHub:Button(config, "Save", nil, function() AntiHub.saveConfig() end)
+AntiHub:Button(config, "Load", nil, function() AntiHub.loadConfig() end)
+
+local miscColors = AntiHub:Section(misc.left, "Colors", 80, 2)
+AntiHub:ColorPicker(miscColors, "UI Accent", Color3.fromRGB(225, 47, 55))
 
 if runtime.loadedConfig and runtime.loadedConfig.accent then
 	local ok, savedAccent = pcall(function() return Color3.fromHex(runtime.loadedConfig.accent) end)
-	if ok and savedAccent then updateAccent(savedAccent) end
+	if ok and savedAccent then
+		state.accent = savedAccent
+	end
 end
 
 updateKeybindList()
