@@ -7,7 +7,7 @@ local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(255, 0, 0)
 local CloseBind = Enum.KeyCode.RightControl
 
--- Criar botão flutuante para mostrar/esconder
+-- Criar botão flutuante (sempre visível)
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Name = "ToggleUIButton"
 ToggleButton.Size = UDim2.new(0, 50, 0, 50)
@@ -19,6 +19,7 @@ ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.TextSize = 25
 ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.Parent = game.CoreGui
+ToggleButton.Visible = true
 
 local ToggleCorner = Instance.new("UICorner")
 ToggleCorner.CornerRadius = UDim.new(0.5, 0)
@@ -26,6 +27,7 @@ ToggleCorner.Parent = ToggleButton
 
 -- Variável para controlar visibilidade da UI
 local uiVisible = true
+local lastButtonPosition = ToggleButton.Position
 
 -- Função para fazer o botão ser arrastável
 local dragging = false
@@ -41,6 +43,7 @@ ToggleButton.InputBegan:Connect(function(input)
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
                 dragging = false
+                lastButtonPosition = ToggleButton.Position
             end
         end)
     end
@@ -52,6 +55,7 @@ UserInputService.InputChanged:Connect(function(input)
         local newX = math.clamp(startPos.X.Scale + (delta.X / game.CoreGui.AbsoluteSize.X), 0, 0.95)
         local newY = math.clamp(startPos.Y.Scale + (delta.Y / game.CoreGui.AbsoluteSize.Y), 0, 0.95)
         ToggleButton.Position = UDim2.new(newX, 0, newY, 0)
+        lastButtonPosition = ToggleButton.Position
     end
 end)
 
@@ -1314,6 +1318,7 @@ function lib:Window(text, preset, closebind)
             BindTitle.Font = Enum.Font.Gotham
             BindTitle.Text = text
             BindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+            BindTitle.TextSize
             BindTitle.TextSize = 14.000
             BindTitle.TextXAlignment = Enum.TextXAlignment.Left
 
