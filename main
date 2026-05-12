@@ -1,3 +1,4 @@
+-- UI Library modificada com botão de mostrar/esconder
 local lib = {RainbowColorValue = 0, HueSelectionPosition = 0}
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -7,11 +8,11 @@ local Mouse = LocalPlayer:GetMouse()
 local PresetColor = Color3.fromRGB(255, 0, 0)
 local CloseBind = Enum.KeyCode.RightControl
 
--- Criar botão flutuante (sempre visível)
+-- Criar botão arrastável primeiro
 local ToggleButton = Instance.new("TextButton")
 ToggleButton.Name = "ToggleUIButton"
 ToggleButton.Size = UDim2.new(0, 50, 0, 50)
-ToggleButton.Position = UDim2.new(0.85, 0, 0.85, 0)
+ToggleButton.Position = UDim2.new(0.9, 0, 0.85, 0)
 ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 ToggleButton.BackgroundTransparency = 0.3
 ToggleButton.Text = "≡"
@@ -19,15 +20,10 @@ ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleButton.TextSize = 25
 ToggleButton.Font = Enum.Font.GothamBold
 ToggleButton.Parent = game.CoreGui
-ToggleButton.Visible = true
 
 local ToggleCorner = Instance.new("UICorner")
 ToggleCorner.CornerRadius = UDim.new(0.5, 0)
 ToggleCorner.Parent = ToggleButton
-
--- Variável para controlar visibilidade da UI
-local uiVisible = true
-local lastButtonPosition = ToggleButton.Position
 
 -- Função para fazer o botão ser arrastável
 local dragging = false
@@ -43,7 +39,6 @@ ToggleButton.InputBegan:Connect(function(input)
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
                 dragging = false
-                lastButtonPosition = ToggleButton.Position
             end
         end)
     end
@@ -55,7 +50,6 @@ UserInputService.InputChanged:Connect(function(input)
         local newX = math.clamp(startPos.X.Scale + (delta.X / game.CoreGui.AbsoluteSize.X), 0, 0.95)
         local newY = math.clamp(startPos.Y.Scale + (delta.Y / game.CoreGui.AbsoluteSize.Y), 0, 0.95)
         ToggleButton.Position = UDim2.new(newX, 0, newY, 0)
-        lastButtonPosition = ToggleButton.Position
     end
 end)
 
@@ -145,7 +139,7 @@ function lib:Window(text, preset, closebind)
     Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     Main.BorderSizePixel = 0
     Main.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Main.Size = UDim2.new(0, 560, 0, 0)
+    Main.Size = UDim2.new(0, 0, 0, 0)
     Main.ClipsDescendants = true
     Main.Visible = true
 
@@ -179,26 +173,58 @@ function lib:Window(text, preset, closebind)
     DragFrame.BackgroundTransparency = 1.000
     DragFrame.Size = UDim2.new(0, 560, 0, 41)
 
-    -- Mostrar a UI com animação
     Main:TweenSize(UDim2.new(0, 560, 0, 319), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .6, true)
 
     MakeDraggable(DragFrame, Main)
 
     local uitoggled = false
-
-    -- Função para esconder a UI
+    
+    -- Botão de toggle na UI (dentro da janela)
+    local UIToggleBtn = Instance.new("TextButton")
+    UIToggleBtn.Name = "UIToggleBtn"
+    UIToggleBtn.Parent = Main
+    UIToggleBtn.Size = UDim2.new(0, 30, 0, 30)
+    UIToggleBtn.Position = UDim2.new(1, -35, 0, 5)
+    UIToggleBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    UIToggleBtn.BackgroundTransparency = 0.5
+    UIToggleBtn.Text = "≡"
+    UIToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    UIToggleBtn.TextSize = 18
+    UIToggleBtn.Font = Enum.Font.GothamBold
+    
+    local UIToggleCorner = Instance.new("UICorner")
+    UIToggleCorner.CornerRadius = UDim.new(0.5, 0)
+    UIToggleCorner.Parent = UIToggleBtn
+    
+    -- Botão de fechar (X)
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Name = "CloseBtn"
+    CloseBtn.Parent = Main
+    CloseBtn.Size = UDim2.new(0, 30, 0, 30)
+    CloseBtn.Position = UDim2.new(1, -70, 0, 5)
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+    CloseBtn.BackgroundTransparency = 0.5
+    CloseBtn.Text = "X"
+    CloseBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseBtn.TextSize = 18
+    CloseBtn.Font = Enum.Font.GothamBold
+    
+    local CloseCorner = Instance.new("UICorner")
+    CloseCorner.CornerRadius = UDim.new(0.5, 0)
+    CloseCorner.Parent = CloseBtn
+    
+    -- Função para esconder/mostrar UI pelo botão dentro da janela
     local function hideUI()
         if uitoggled == false then
             uitoggled = true
-            Main:TweenSize(UDim2.new(0, 560, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .4, true, function()
+            Main:TweenSize(UDim2.new(0, 0, 0, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .4, true, function()
                 ui.Enabled = false
             end)
             ToggleButton.Text = "▶"
             ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
         end
     end
-
-    -- Função para mostrar a UI
+    
     local function showUI()
         if uitoggled == true then
             uitoggled = false
@@ -208,8 +234,14 @@ function lib:Window(text, preset, closebind)
             ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
         end
     end
-
-    -- Botão flutuante para mostrar/esconder
+    
+    -- Botão de toggle da UI (minimizar)
+    UIToggleBtn.MouseButton1Click:Connect(hideUI)
+    
+    -- Botão de fechar (X) - também esconde a UI
+    CloseBtn.MouseButton1Click:Connect(hideUI)
+    
+    -- Botão flutuante para mostrar a UI
     ToggleButton.MouseButton1Click:Connect(function()
         if uitoggled then
             showUI()
@@ -218,7 +250,7 @@ function lib:Window(text, preset, closebind)
         end
     end)
 
-    -- Tecla de atalho para mostrar/esconder
+    -- Tecla de atalho (RightControl)
     UserInputService.InputBegan:Connect(function(io, p)
         if io.KeyCode == CloseBind then
             if uitoggled == false then
@@ -587,7 +619,6 @@ function lib:Window(text, preset, closebind)
                 TweenService:Create(FrameToggleCircle, TweenInfo.new(.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
                 FrameToggleCircle:TweenPosition(UDim2.new(0.587, 0, 0.222000003, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, .2, true)
                 toggled = not toggled
-                pcall(callback, toggled)
             end
 
             Tab.CanvasSize = UDim2.new(0, 0, 0, TabLayout.AbsoluteContentSize.Y)
@@ -1318,7 +1349,6 @@ function lib:Window(text, preset, closebind)
             BindTitle.Font = Enum.Font.Gotham
             BindTitle.Text = text
             BindTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-            BindTitle.TextSize
             BindTitle.TextSize = 14.000
             BindTitle.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1363,4 +1393,8 @@ function lib:Window(text, preset, closebind)
     return tabhold
 end
 
+-- Agora o resto do script ANTIHUB com todas as funções
+-- (Aqui você coloca todo o resto do script ANTIHUB)
+
+-- Retornar a lib modificada
 return lib
