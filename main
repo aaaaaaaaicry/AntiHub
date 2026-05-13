@@ -451,7 +451,7 @@ function IceHub.CreateMain(gameName, subtitle)
     nameLabelStroke.Parent = NameLabel
     task.spawn(function()
         while true do
-            task.wait(0.09)
+            task.wait(0.05)
             if usernameHidden then
                 NameLabel.Text = generateRandomString(5)
             else
@@ -2454,37 +2454,37 @@ function IceHub.CreateMain(gameName, subtitle)
                                     isSliding = false
                                 end
                             end)
-                        slideTrigger.MouseButton1Down:Connect(function()
-    isSliding = true
-    local bgRef = sliderBackground  -- GUARDA A REFERÊNCIA AQUI
-    task.spawn(function()
-        while true do
-            task.wait()
-            if isSliding then
-                local mouseX = game:GetService("Players").LocalPlayer:GetMouse().X
-                local rawValue = math.clamp((mouseX - bgRef.AbsolutePosition.X) / bgRef.AbsoluteSize.X, 0, 1)  -- USA bgRef
-                local value = minValue + (maxValue - minValue) * rawValue
-                local roundedValue = math.floor(value / 1 + math.sign(value) * 0.5) * 1
-                if roundedValue < 0 then
-                    roundedValue = roundedValue + 1
-                end
-                sliderDisplay.Size = UDim2.new((math.clamp(roundedValue, minValue, maxValue) - minValue) / (maxValue - minValue), 0, 0, 12)
-                sliderValue.Text = tostring(math.clamp(roundedValue, minValue, maxValue))
-                if roundedValue == 0 then
-                    sliderDisplay.Visible = false
-                else
-                    sliderDisplay.Visible = true
-                end
-                task.spawn(function()
-                    callback(roundedValue)
-                end)
-            end
-            if not isSliding then
-                return
-            end
-        end
-    end)
-end)
+                            slideTrigger.MouseButton1Down:Connect(function()
+                                isSliding = true
+                                local bgRef = sliderBackground
+                                task.spawn(function()
+                                    while true do
+                                        task.wait()
+                                        if isSliding then
+                                            local mouseX = game:GetService("Players").LocalPlayer:GetMouse().X
+                                            local rawValue = math.clamp((mouseX - bgRef.AbsolutePosition.X) / bgRef.AbsoluteSize.X, 0, 1)
+                                            local value = minValue + (maxValue - minValue) * rawValue
+                                            local roundedValue = math.floor(value / 1 + math.sign(value) * 0.5) * 1
+                                            if roundedValue < 0 then
+                                                roundedValue = roundedValue + 1
+                                            end
+                                            sliderDisplay.Size = UDim2.new((math.clamp(roundedValue, minValue, maxValue) - minValue) / (maxValue - minValue), 0, 0, 12)
+                                            sliderValue.Text = tostring(math.clamp(roundedValue, minValue, maxValue))
+                                            if roundedValue == 0 then
+                                                sliderDisplay.Visible = false
+                                            else
+                                                sliderDisplay.Visible = true
+                                            end
+                                            task.spawn(function()
+                                                callback(roundedValue)
+                                            end)
+                                        end
+                                        if not isSliding then
+                                            return
+                                        end
+                                    end
+                                end)
+                            end)
                             newTabPage.CanvasSize = UDim2.new(0, 0, 0, tabPageLayout.AbsoluteContentSize.Y + 5)
                         end,
                         WaitingFrame = function(_, message)
