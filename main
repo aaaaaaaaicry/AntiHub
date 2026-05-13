@@ -449,6 +449,16 @@ function IceHub.CreateMain(gameName, subtitle)
     nameLabelStroke.Thickness = 0.8
     nameLabelStroke.Transparency = 0.4
     nameLabelStroke.Parent = NameLabel
+    task.spawn(function()
+        while true do
+            task.wait(0.3)
+            if usernameHidden then
+                NameLabel.Text = generateRandomString(5)
+            else
+                NameLabel.Text = "Hey, " .. game.Players.LocalPlayer.DisplayName .. " !"
+            end
+        end
+    end)
     Discord = Instance.new("TextButton")
     discordCorner = Instance.new("UICorner")
     discordStroke = Instance.new("UIStroke")
@@ -537,7 +547,7 @@ function IceHub.CreateMain(gameName, subtitle)
             notifyText.TextYAlignment = Enum.TextYAlignment.Top
             timerBar.Name = "TimerBar"
             timerBar.Parent = notifyFrame
-            timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+            timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
             timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
             timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
             timerBar.Size = UDim2.new(0, 219, 0, 4)
@@ -583,7 +593,7 @@ function IceHub.CreateMain(gameName, subtitle)
             notifyShadow:Destroy()
         end)
         spawn(function()
-            setclipboard("https://discord.com/invite/K5eqZsAz")
+            setclipboard("https://discord.gg/c6KcabWmEV")
         end)
     end)
     discordCorner.CornerRadius = UDim.new(0, 4)
@@ -1060,7 +1070,7 @@ function IceHub.CreateMain(gameName, subtitle)
     Title.Position = UDim2.new(0.0305882357, 0, 0.0333323143, 0)
     Title.Size = UDim2.new(0, 200, 0, 28)
     Title.Font = Enum.Font.Gotham
-    Title.Text = "IceHub - " .. gameName .. " " .. versionText
+    Title.Text = gameName .. " " .. versionText
     Title.TextColor3 = titleColor
     Title.TextSize = 13
     Title.TextXAlignment = Enum.TextXAlignment.Left
@@ -1518,7 +1528,7 @@ function IceHub.CreateMain(gameName, subtitle)
                                 notifyText.TextYAlignment = Enum.TextYAlignment.Top
                                 timerBar.Name = "TimerBar"
                                 timerBar.Parent = notifyFrame
-                                timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+                                timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
                                 timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
                                 timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
                                 timerBar.Size = UDim2.new(0, 219, 0, 4)
