@@ -339,9 +339,6 @@ function IceHub.CreateMain(gameName, subtitle)
     local menuButton = Instance.new("TextButton")
     local menuButtonCorner = Instance.new("UICorner")
     local menuButtonStroke = Instance.new("UIStroke")
-    local settingsButton = Instance.new("TextButton")
-    local settingsButtonCorner = Instance.new("UICorner")
-    local settingsButtonStroke = Instance.new("UIStroke")
     table.insert(tabButtonList, menuButton)
     menuButton.Name = "Menu"
     menuButton.Parent = tabScrollFrame
@@ -396,53 +393,6 @@ function IceHub.CreateMain(gameName, subtitle)
             Transparency = 0.2
         }):Play()
         MenuPage.Visible = true
-    end)
-    table.insert(tabButtonList, settingsButton)
-    settingsButton.Name = "Settings"
-    settingsButton.Parent = tabScrollFrame
-    settingsButton.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
-    settingsButton.BackgroundTransparency = 1
-    settingsButton.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    settingsButton.Position = UDim2.new(0, 0, 0.1, 0)
-    settingsButton.Size = UDim2.new(0, 94, 0, 25)
-    settingsButton.AutoButtonColor = false
-    settingsButton.Font = Enum.Font.Gotham
-    settingsButton.Text = "Settings"
-    settingsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    settingsButton.TextSize = 12
-    settingsButtonCorner.CornerRadius = UDim.new(0, 3)
-    settingsButtonCorner.Parent = settingsButton
-    settingsButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    settingsButtonStroke.Color = Color3.fromRGB(44, 44, 44)
-    settingsButtonStroke.Transparency = 1
-    settingsButtonStroke.Parent = settingsButton
-    settingsButton.MouseButton1Click:Connect(function()
-        if MenuPage ~= nil and MenuPage.Visible then
-            MenuPage.Visible = false
-        end
-        for _, tabBtn in pairs(tabButtonList) do
-            if tabBtn and tabBtn.BackgroundTransparency ~= 1 then
-                tweenService:Create(tabBtn, TweenInfo.new(0.2), {
-                    TextColor3 = Color3.fromRGB(255, 255, 255)
-                }):Play()
-                tweenService:Create(tabBtn, TweenInfo.new(0.2), {
-                    BackgroundTransparency = 1
-                }):Play()
-                tweenService:Create(tabBtn.UIStroke, TweenInfo.new(0.2), {
-                    Transparency = 1
-                }):Play()
-            end
-        end
-        tweenService:Create(settingsButton, TweenInfo.new(0.2), {
-            TextColor3 = buttonColor
-        }):Play()
-        tweenService:Create(settingsButton, TweenInfo.new(0.2), {
-            BackgroundTransparency = 0.5
-        }):Play()
-        tweenService:Create(settingsButton.UIStroke, TweenInfo.new(0.2), {
-            Transparency = 0.2
-        }):Play()
-        SettingsPage.Visible = true
     end)
     LocalFrame.Name = "LocalFrame"
     LocalFrame.Parent = MenuPage
@@ -587,7 +537,7 @@ function IceHub.CreateMain(gameName, subtitle)
             notifyText.TextYAlignment = Enum.TextYAlignment.Top
             timerBar.Name = "TimerBar"
             timerBar.Parent = notifyFrame
-            timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
+            timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
             timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
             timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
             timerBar.Size = UDim2.new(0, 219, 0, 4)
@@ -671,69 +621,6 @@ function IceHub.CreateMain(gameName, subtitle)
     Developers.TextColor3 = Color3.fromRGB(129, 129, 129)
     Developers.TextSize = 15
     Developers.TextYAlignment = Enum.TextYAlignment.Top
-    xjfs.Name = "xjfs"
-    xjfs.Parent = Credits
-    xjfs.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    xjfs.BackgroundTransparency = 0.4
-    xjfs.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    xjfs.Position = UDim2.new(0, 0, 0.658262908, 0)
-    xjfs.Size = UDim2.new(0, 285, 0, 107)
-    xjfsCorner.CornerRadius = UDim.new(0, 4)
-    xjfsCorner.Parent = xjfs
-    description3.Name = "Description"
-    description3.Parent = xjfs
-    description3.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    description3.BackgroundTransparency = 1
-    description3.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    description3.Position = UDim2.new(0.424561411, 0, 0.744000077, 0)
-    description3.Size = UDim2.new(0, 150, 0, 19)
-    description3.Font = Enum.Font.SourceSans
-    description3.Text = "Discord: xjfs"
-    description3.TextColor3 = Color3.fromRGB(255, 255, 255)
-    description3.TextSize = 16
-    description3.TextWrapped = true
-    description3.TextXAlignment = Enum.TextXAlignment.Left
-    description3Corner.CornerRadius = UDim.new(0, 4)
-    description3Corner.Parent = description3
-    xjfsStroke.Color = Color3.fromRGB(39, 39, 39)
-    xjfsStroke.Thickness = 0.8
-    xjfsStroke.Parent = xjfs
-    developer3.Name = "Developer"
-    developer3.Parent = xjfs
-    developer3.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    developer3.BackgroundTransparency = 1
-    developer3.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    developer3.Position = UDim2.new(0.424561411, 0, 0.0866539478, 0)
-    developer3.Size = UDim2.new(0, 145, 0, 30)
-    developer3.Font = Enum.Font.Gotham
-    developer3.Text = "xjfs, Developer"
-    developer3.TextColor3 = Color3.fromRGB(255, 255, 255)
-    developer3.TextSize = 14
-    developer3.TextWrapped = true
-    developer3.TextXAlignment = Enum.TextXAlignment.Left
-    developer3Corner.CornerRadius = UDim.new(0, 4)
-    developer3Corner.Parent = developer3
-    xjfsImage.Parent = xjfs
-    xjfsImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    xjfsImage.BackgroundTransparency = 1
-    xjfsImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    xjfsImage.BorderSizePixel = 0
-    xjfsImage.Position = UDim2.new(0.0419999994, 0, 0.0960000008, 0)
-    xjfsImage.Size = UDim2.new(0, 88, 0, 88)
-    task.spawn(function()
-        xjfsImage.Image = game.Players:GetUserThumbnailAsync(967736154, Enum.ThumbnailType.AvatarBust, Enum.ThumbnailSize.Size420x420) or "rbxasset://textures/ui/GuiImagePlaceholder.png"
-    end)
-    xjfsImageCorner.CornerRadius = UDim.new(0, 4)
-    xjfsImageCorner.Parent = xjfsImage
-    Vail = Instance.new("Frame")
-    vailCorner = Instance.new("UICorner")
-    description4 = Instance.new("TextLabel")
-    description4Corner = Instance.new("UICorner")
-    vailStroke = Instance.new("UIStroke")
-    developer4 = Instance.new("TextLabel")
-    developer4Corner = Instance.new("UICorner")
-    vailImage = Instance.new("ImageLabel")
-    vailImageCorner = Instance.new("UICorner")
     Vail.Name = "Vail"
     Vail.Parent = Credits
     Vail.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
@@ -952,7 +839,7 @@ function IceHub.CreateMain(gameName, subtitle)
                 NameLabel.Text = "Hey, " .. game.Players.LocalPlayer.DisplayName .. " !"
             elseif usernameHidden == false then
                 usernameHidden = true
-                NameLabel.Text = "Hey, [hidden] !"
+                NameLabel.Text = generateRandomString(5)
             end
             if usernameToggleState then
                 tweenService:Create(InsideToggle, TweenInfo.new(0.2), {
@@ -1031,7 +918,7 @@ function IceHub.CreateMain(gameName, subtitle)
                     PlayerImageLabel.Image = game.Players:GetUserThumbnailAsync(game.Players.LocalPlayer.UserId, Enum.ThumbnailType.AvatarBust, Enum.ThumbnailSize.Size420x420) or "rbxasset://textures/ui/GuiImagePlaceholder.png"
                 end)
             else
-                PlayerImageLabel.Image = ""
+                PlayerImageLabel.Image = "rbxassetid://17858239341"
                 avatarHidden = true
             end
             if avatarToggleState then
@@ -1631,7 +1518,7 @@ function IceHub.CreateMain(gameName, subtitle)
                                 notifyText.TextYAlignment = Enum.TextYAlignment.Top
                                 timerBar.Name = "TimerBar"
                                 timerBar.Parent = notifyFrame
-                                timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
+                                timerBar.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
                                 timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
                                 timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
                                 timerBar.Size = UDim2.new(0, 219, 0, 4)
@@ -2515,7 +2402,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             label.TextXAlignment = Enum.TextXAlignment.Left
                             sliderDisplay.Name = "SliderDisplay"
                             sliderDisplay.Parent = sliderFrame
-                            sliderDisplay.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
+                            sliderDisplay.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
                             sliderDisplay.BorderColor3 = Color3.fromRGB(0, 203, 203)
                             sliderDisplay.Position = UDim2.new(0.0200000834, 0, 0.610000014, 0)
                             sliderDisplay.Size = UDim2.new(0, 0, 0, 12)
