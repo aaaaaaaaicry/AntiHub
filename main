@@ -666,7 +666,7 @@ function IceHub.CreateMain(gameName, subtitle)
     developer4.Position = UDim2.new(0.424561411, 0, 0.0866539478, 0)
     developer4.Size = UDim2.new(0, 145, 0, 30)
     developer4.Font = Enum.Font.Gotham
-    developer4.Text = "Vail, Owner"
+    developer4.Text = "Vail, Owner/Developer"
     developer4.TextColor3 = Color3.fromRGB(255, 255, 255)
     developer4.TextSize = 14
     developer4.TextWrapped = true
