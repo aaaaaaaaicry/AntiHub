@@ -541,7 +541,7 @@ function IceHub.CreateMain(gameName, subtitle)
             timerBar.Name = "TimerBar"
             timerBar.Parent = notifyFrame
             timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-            timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
+            timerBar.BorderColor3 = Color3.fromRGB(255, 55, 55)
             timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
             timerBar.Size = UDim2.new(0, 219, 0, 4)
             timerBar.ZIndex = 2
@@ -1616,7 +1616,7 @@ function IceHub.CreateMain(gameName, subtitle)
                                 timerBar.Name = "TimerBar"
                                 timerBar.Parent = notifyFrame
                                 timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-                                timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
+                                timerBar.BorderColor3 = Color3.fromRGB(255, 55, 55)
                                 timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
                                 timerBar.Size = UDim2.new(0, 219, 0, 4)
                                 timerBar.ZIndex = 2
@@ -2500,7 +2500,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             sliderDisplay.Name = "SliderDisplay"
                             sliderDisplay.Parent = sliderFrame
                             sliderDisplay.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-                            sliderDisplay.BorderColor3 = Color3.fromRGB(0, 203, 203)
+                            sliderDisplay.BorderColor3 = Color3.fromRGB(255, 55, 55)
                             sliderDisplay.Position = UDim2.new(0.0200000834, 0, 0.610000014, 0)
                             sliderDisplay.Size = UDim2.new(0, 0, 0, 12)
                             sliderDisplay.ZIndex = 2
