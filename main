@@ -27,6 +27,10 @@ if not (isHalloween or isChristmas) and true or gameMode then
     labelColor = config._rbxev_mode._normal_mode._lblt
     versionText = config._rbxev_mode._normal_mode._te
 end
+if not (isHalloween or isChristmas) then
+    buttonColor = Color3.fromRGB(255, 55, 55)
+    labelColor = Color3.fromRGB(255, 55, 55)
+end
 game.Players.LocalPlayer.Idled:Connect(function()
     local virtualUser = game:GetService("VirtualUser")
     virtualUser:CaptureController()
@@ -138,6 +142,15 @@ function IceHub.CreateMain(gameName, subtitle)
     developer3Corner = Instance.new("UICorner")
     xjfsImage = Instance.new("ImageLabel")
     xjfsImageCorner = Instance.new("UICorner")
+    Vail = Instance.new("Frame")
+    vailCorner = Instance.new("UICorner")
+    description4 = Instance.new("TextLabel")
+    description4Corner = Instance.new("UICorner")
+    vailStroke = Instance.new("UIStroke")
+    developer4 = Instance.new("TextLabel")
+    developer4Corner = Instance.new("UICorner")
+    vailImage = Instance.new("ImageLabel")
+    vailImageCorner = Instance.new("UICorner")
     TutorialPage = Instance.new("ScrollingFrame")
     ClickBlock = Instance.new("TextButton")
     TutorialFrame = Instance.new("Frame")
@@ -541,7 +554,7 @@ function IceHub.CreateMain(gameName, subtitle)
             timerBar.Name = "TimerBar"
             timerBar.Parent = notifyFrame
             timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-            timerBar.BorderColor3 = Color3.fromRGB(255, 55, 55)
+            timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
             timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
             timerBar.Size = UDim2.new(0, 219, 0, 4)
             timerBar.ZIndex = 2
@@ -612,7 +625,7 @@ function IceHub.CreateMain(gameName, subtitle)
     Credits.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Credits.BackgroundTransparency = 1
     Credits.Position = UDim2.new(0, 0, -1.24242425, 0)
-    Credits.Size = UDim2.new(0, 285, 0, 370)
+    Credits.Size = UDim2.new(0, 285, 0, 477)
     Ice.Name = "Le M (Ice)"
     Ice.Parent = Credits
     Ice.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
@@ -772,6 +785,69 @@ function IceHub.CreateMain(gameName, subtitle)
     end)
     xjfsImageCorner.CornerRadius = UDim.new(0, 4)
     xjfsImageCorner.Parent = xjfsImage
+    Vail = Instance.new("Frame")
+    vailCorner = Instance.new("UICorner")
+    description4 = Instance.new("TextLabel")
+    description4Corner = Instance.new("UICorner")
+    vailStroke = Instance.new("UIStroke")
+    developer4 = Instance.new("TextLabel")
+    developer4Corner = Instance.new("UICorner")
+    vailImage = Instance.new("ImageLabel")
+    vailImageCorner = Instance.new("UICorner")
+    Vail.Name = "Vail"
+    Vail.Parent = Credits
+    Vail.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    Vail.BackgroundTransparency = 0.4
+    Vail.BorderColor3 = Color3.fromRGB(20, 20, 20)
+    Vail.Position = UDim2.new(0, 0, 0.874, 0)
+    Vail.Size = UDim2.new(0, 285, 0, 107)
+    vailCorner.CornerRadius = UDim.new(0, 4)
+    vailCorner.Parent = Vail
+    description4.Name = "Description"
+    description4.Parent = Vail
+    description4.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    description4.BackgroundTransparency = 1
+    description4.BorderColor3 = Color3.fromRGB(20, 20, 20)
+    description4.Position = UDim2.new(0.424561411, 0, 0.744000077, 0)
+    description4.Size = UDim2.new(0, 150, 0, 19)
+    description4.Font = Enum.Font.SourceSans
+    description4.Text = ""
+    description4.TextColor3 = Color3.fromRGB(255, 255, 255)
+    description4.TextSize = 16
+    description4.TextWrapped = true
+    description4.TextXAlignment = Enum.TextXAlignment.Left
+    description4Corner.CornerRadius = UDim.new(0, 4)
+    description4Corner.Parent = description4
+    vailStroke.Color = Color3.fromRGB(39, 39, 39)
+    vailStroke.Thickness = 0.8
+    vailStroke.Parent = Vail
+    developer4.Name = "Developer"
+    developer4.Parent = Vail
+    developer4.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    developer4.BackgroundTransparency = 1
+    developer4.BorderColor3 = Color3.fromRGB(20, 20, 20)
+    developer4.Position = UDim2.new(0.424561411, 0, 0.0866539478, 0)
+    developer4.Size = UDim2.new(0, 145, 0, 30)
+    developer4.Font = Enum.Font.Gotham
+    developer4.Text = "Vail, Owner"
+    developer4.TextColor3 = Color3.fromRGB(255, 255, 255)
+    developer4.TextSize = 14
+    developer4.TextWrapped = true
+    developer4.TextXAlignment = Enum.TextXAlignment.Left
+    developer4Corner.CornerRadius = UDim.new(0, 4)
+    developer4Corner.Parent = developer4
+    vailImage.Parent = Vail
+    vailImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    vailImage.BackgroundTransparency = 1
+    vailImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    vailImage.BorderSizePixel = 0
+    vailImage.Position = UDim2.new(0.0419999994, 0, 0.0960000008, 0)
+    vailImage.Size = UDim2.new(0, 88, 0, 88)
+    task.spawn(function()
+        vailImage.Image = game.Players:GetUserThumbnailAsync(811332997, Enum.ThumbnailType.AvatarBust, Enum.ThumbnailSize.Size420x420) or "rbxasset://textures/ui/GuiImagePlaceholder.png"
+    end)
+    vailImageCorner.CornerRadius = UDim.new(0, 4)
+    vailImageCorner.Parent = vailImage
     TutorialPage.Name = "TutorialPage"
     TutorialPage.Parent = FrameFolder
     TutorialPage.Active = true
@@ -1616,7 +1692,7 @@ function IceHub.CreateMain(gameName, subtitle)
                                 timerBar.Name = "TimerBar"
                                 timerBar.Parent = notifyFrame
                                 timerBar.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-                                timerBar.BorderColor3 = Color3.fromRGB(255, 55, 55)
+                                timerBar.BorderColor3 = Color3.fromRGB(0, 203, 203)
                                 timerBar.Position = UDim2.new(0.014, 0, 0.906666696, 0)
                                 timerBar.Size = UDim2.new(0, 219, 0, 4)
                                 timerBar.ZIndex = 2
@@ -2500,7 +2576,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             sliderDisplay.Name = "SliderDisplay"
                             sliderDisplay.Parent = sliderFrame
                             sliderDisplay.BackgroundColor3 = Color3.fromRGB(255, 55, 55)
-                            sliderDisplay.BorderColor3 = Color3.fromRGB(255, 55, 55)
+                            sliderDisplay.BorderColor3 = Color3.fromRGB(0, 203, 203)
                             sliderDisplay.Position = UDim2.new(0.0200000834, 0, 0.610000014, 0)
                             sliderDisplay.Size = UDim2.new(0, 0, 0, 12)
                             sliderDisplay.ZIndex = 2
