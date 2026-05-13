@@ -339,6 +339,9 @@ function IceHub.CreateMain(gameName, subtitle)
     local menuButton = Instance.new("TextButton")
     local menuButtonCorner = Instance.new("UICorner")
     local menuButtonStroke = Instance.new("UIStroke")
+    local settingsButton = Instance.new("TextButton")
+    local settingsButtonCorner = Instance.new("UICorner")
+    local settingsButtonStroke = Instance.new("UIStroke")
     table.insert(tabButtonList, menuButton)
     menuButton.Name = "Menu"
     menuButton.Parent = tabScrollFrame
@@ -393,6 +396,53 @@ function IceHub.CreateMain(gameName, subtitle)
             Transparency = 0.2
         }):Play()
         MenuPage.Visible = true
+    end)
+    table.insert(tabButtonList, settingsButton)
+    settingsButton.Name = "Settings"
+    settingsButton.Parent = tabScrollFrame
+    settingsButton.BackgroundColor3 = Color3.fromRGB(34, 34, 34)
+    settingsButton.BackgroundTransparency = 1
+    settingsButton.BorderColor3 = Color3.fromRGB(20, 20, 20)
+    settingsButton.Position = UDim2.new(0, 0, 0.1, 0)
+    settingsButton.Size = UDim2.new(0, 94, 0, 25)
+    settingsButton.AutoButtonColor = false
+    settingsButton.Font = Enum.Font.Gotham
+    settingsButton.Text = "Settings"
+    settingsButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    settingsButton.TextSize = 12
+    settingsButtonCorner.CornerRadius = UDim.new(0, 3)
+    settingsButtonCorner.Parent = settingsButton
+    settingsButtonStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    settingsButtonStroke.Color = Color3.fromRGB(44, 44, 44)
+    settingsButtonStroke.Transparency = 1
+    settingsButtonStroke.Parent = settingsButton
+    settingsButton.MouseButton1Click:Connect(function()
+        if MenuPage ~= nil and MenuPage.Visible then
+            MenuPage.Visible = false
+        end
+        for _, tabBtn in pairs(tabButtonList) do
+            if tabBtn and tabBtn.BackgroundTransparency ~= 1 then
+                tweenService:Create(tabBtn, TweenInfo.new(0.2), {
+                    TextColor3 = Color3.fromRGB(255, 255, 255)
+                }):Play()
+                tweenService:Create(tabBtn, TweenInfo.new(0.2), {
+                    BackgroundTransparency = 1
+                }):Play()
+                tweenService:Create(tabBtn.UIStroke, TweenInfo.new(0.2), {
+                    Transparency = 1
+                }):Play()
+            end
+        end
+        tweenService:Create(settingsButton, TweenInfo.new(0.2), {
+            TextColor3 = buttonColor
+        }):Play()
+        tweenService:Create(settingsButton, TweenInfo.new(0.2), {
+            BackgroundTransparency = 0.5
+        }):Play()
+        tweenService:Create(settingsButton.UIStroke, TweenInfo.new(0.2), {
+            Transparency = 0.2
+        }):Play()
+        SettingsPage.Visible = true
     end)
     LocalFrame.Name = "LocalFrame"
     LocalFrame.Parent = MenuPage
