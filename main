@@ -2385,6 +2385,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             local sliderBackgroundCorner = Instance.new("UICorner")
                             local slideTrigger = Instance.new("TextButton")
                             local sliderValue = Instance.new("TextLabel")
+                            
                             sliderFrame.Name = "Slider"
                             sliderFrame.Parent = newTabPage
                             sliderFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
@@ -2399,6 +2400,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             sliderFrameStroke.Color = Color3.fromRGB(49, 49, 49)
                             sliderFrameStroke.Transparency = 0.2
                             sliderFrameStroke.Parent = sliderFrame
+                            
                             label.Name = "Text"
                             label.Parent = sliderFrame
                             label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2410,14 +2412,16 @@ function IceHub.CreateMain(gameName, subtitle)
                             label.TextColor3 = Color3.fromRGB(255, 255, 255)
                             label.TextSize = 13
                             label.TextXAlignment = Enum.TextXAlignment.Left
+                            
                             sliderDisplay.Name = "SliderDisplay"
                             sliderDisplay.Parent = sliderFrame
-                            sliderDisplay.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+                            sliderDisplay.BackgroundColor3 = buttonColor or Color3.fromRGB(255, 55, 55)
                             sliderDisplay.BorderColor3 = Color3.fromRGB(0, 203, 203)
                             sliderDisplay.Position = UDim2.new(0.0200000834, 0, 0.610000014, 0)
                             sliderDisplay.Size = UDim2.new(0, 0, 0, 12)
                             sliderDisplay.ZIndex = 2
                             sliderDisplayCorner.Parent = sliderDisplay
+                            
                             sliderBackground.Name = "BelowSlider"
                             sliderBackground.Parent = sliderFrame
                             sliderBackground.BackgroundColor3 = Color3.fromRGB(67, 67, 67)
@@ -2425,6 +2429,7 @@ function IceHub.CreateMain(gameName, subtitle)
                             sliderBackground.Position = UDim2.new(0.0200000834, 0, 0.620000005, 0)
                             sliderBackground.Size = UDim2.new(0.96, 0, 0, 12)
                             sliderBackgroundCorner.Parent = sliderBackground
+                            
                             slideTrigger.Name = "SlideTrigger"
                             slideTrigger.Parent = sliderFrame
                             slideTrigger.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2432,11 +2437,12 @@ function IceHub.CreateMain(gameName, subtitle)
                             slideTrigger.BorderColor3 = Color3.fromRGB(0, 0, 0)
                             slideTrigger.BorderSizePixel = 0
                             slideTrigger.Position = UDim2.new(0.0203389823, 0, 0.645833313, 0)
-                            slideTrigger.Size = UDim2.new(1, 0, 0, 10)
+                            slideTrigger.Size = UDim2.new(0.96, 0, 0, 10)
                             slideTrigger.Font = Enum.Font.SourceSans
                             slideTrigger.Text = ""
                             slideTrigger.TextColor3 = Color3.fromRGB(0, 0, 0)
                             slideTrigger.TextSize = 14
+                            
                             sliderValue.Name = "SliderText"
                             sliderValue.Parent = sliderFrame
                             sliderValue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2444,46 +2450,65 @@ function IceHub.CreateMain(gameName, subtitle)
                             sliderValue.Position = UDim2.new(0.881322026, 0, 0.10310173, 0)
                             sliderValue.Size = UDim2.new(0, 26, 0, 19)
                             sliderValue.Font = Enum.Font.Gotham
-                            sliderValue.Text = "1"
+                            sliderValue.Text = tostring(minValue)
                             sliderValue.TextColor3 = Color3.fromRGB(255, 255, 255)
                             sliderValue.TextSize = 13
-                            game.Players.LocalPlayer:GetMouse()
-                            local isSliding = false
-                            game:GetService("UserInputService").InputEnded:Connect(function(inputEnded)
-                                if inputEnded.UserInputType == Enum.UserInputType.MouseButton1 then
-                                    isSliding = false
+                            
+                            -- Valor inicial
+                            local currentValue = minValue
+                            local barWidth = sliderBackground.AbsoluteSize.X
+                            if barWidth == 0 then
+                                sliderBackground:GetPropertyChangedSignal("AbsoluteSize"):Wait()
+                                barWidth = sliderBackground.AbsoluteSize.X
+                            end
+                            
+                            local function updateSlider(value)
+                                local clamped = math.clamp(value, minValue, maxValue)
+                                currentValue = clamped
+                                local percent = (clamped - minValue) / (maxValue - minValue)
+                                sliderDisplay.Size = UDim2.new(percent, 0, 0, 12)
+                                sliderValue.Text = tostring(math.floor(clamped))
+                                if percent == 0 then
+                                    sliderDisplay.Visible = false
+                                else
+                                    sliderDisplay.Visible = true
                                 end
-                            end)
+                                pcall(callback, clamped)
+                            end
+                            
+                            updateSlider(minValue)
+                            
+                            local dragging = false
+                            local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+                            
                             slideTrigger.MouseButton1Down:Connect(function()
-                                isSliding = true
-                                task.spawn(function()
-                                    while true do
-                                        task.wait()
-                                        if isSliding then
-                                            local mouseX = game:GetService("Players").LocalPlayer:GetMouse().X
-                                            local rawValue = math.clamp((mouseX - sliderBackground.AbsolutePosition.X) / sliderBackground.AbsoluteSize.X, 0, 1)
-                                            local value = minValue + (maxValue - minValue) * rawValue
-                                            local roundedValue = math.floor(value / 1 + math.sign(value) * 0.5) * 1
-                                            if roundedValue < 0 then
-                                                roundedValue = roundedValue + 1
-                                            end
-                                            sliderDisplay.Size = UDim2.new((math.clamp(roundedValue, minValue, maxValue) - minValue) / (maxValue - minValue), 0, 0, 12)
-                                            sliderValue.Text = tostring(math.clamp(roundedValue, minValue, maxValue))
-                                            if roundedValue == 0 then
-                                                sliderDisplay.Visible = false
-                                            else
-                                                sliderDisplay.Visible = true
-                                            end
-                                            task.spawn(function()
-                                                callback(roundedValue)
-                                            end)
-                                        end
-                                        if not isSliding then
-                                            return
-                                        end
+                                dragging = true
+                                local function update()
+                                    if not dragging then return end
+                                    local mousePos = mouse.X
+                                    local barPos = sliderBackground.AbsolutePosition.X
+                                    local barWidth = sliderBackground.AbsoluteSize.X
+                                    if barWidth > 0 then
+                                        local percent = math.clamp((mousePos - barPos) / barWidth, 0, 1)
+                                        local newValue = minValue + (maxValue - minValue) * percent
+                                        updateSlider(newValue)
+                                    end
+                                end
+                                
+                                update()
+                                
+                                local conn
+                                conn = game:GetService("RunService").RenderStepped:Connect(update)
+                                local releaseConn
+                                releaseConn = game:GetService("UserInputService").InputEnded:Connect(function(input)
+                                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                        dragging = false
+                                        conn:Disconnect()
+                                        releaseConn:Disconnect()
                                     end
                                 end)
                             end)
+                            
                             newTabPage.CanvasSize = UDim2.new(0, 0, 0, tabPageLayout.AbsoluteContentSize.Y + 5)
                         end,
                         WaitingFrame = function(_, message)
