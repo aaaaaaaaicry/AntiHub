@@ -1,4 +1,13 @@
 local IceHub = {}
+local function generateRandomString(length)
+    local chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+    local result = ""
+    for i = 1, length do
+        local rand = math.random(1, #chars)
+        result = result .. chars:sub(rand, rand)
+    end
+    return result
+end
 local config = loadstring(game:HttpGet("https://raw.githubusercontent.com/IceMae17/API/refs/heads/main/IceHub"))()
 local gameMode = nil
 local isChristmas = config._event_connection._CHRISTMAS_CONNECTION._christmas
@@ -116,32 +125,7 @@ function IceHub.CreateMain(gameName, subtitle)
     menuPageLayout = Instance.new("UIListLayout")
     menuPagePadding = Instance.new("UIPadding")
     Credits = Instance.new("Frame")
-    Ice = Instance.new("Frame")
-    iceCorner = Instance.new("UICorner")
-    Description = Instance.new("TextLabel")
-    descriptionCorner = Instance.new("UICorner")
-    iceStroke = Instance.new("UIStroke")
-    Developer = Instance.new("TextLabel")
-    developerCorner = Instance.new("UICorner")
     Developers = Instance.new("TextLabel")
-    HexR = Instance.new("Frame")
-    hexrCorner = Instance.new("UICorner")
-    description2 = Instance.new("TextLabel")
-    description2Corner = Instance.new("UICorner")
-    hexrStroke = Instance.new("UIStroke")
-    developer2 = Instance.new("TextLabel")
-    developer2Corner = Instance.new("UICorner")
-    hexrImage = Instance.new("ImageLabel")
-    hexrImageCorner = Instance.new("UICorner")
-    xjfs = Instance.new("Frame")
-    xjfsCorner = Instance.new("UICorner")
-    description3 = Instance.new("TextLabel")
-    description3Corner = Instance.new("UICorner")
-    xjfsStroke = Instance.new("UIStroke")
-    developer3 = Instance.new("TextLabel")
-    developer3Corner = Instance.new("UICorner")
-    xjfsImage = Instance.new("ImageLabel")
-    xjfsImageCorner = Instance.new("UICorner")
     Vail = Instance.new("Frame")
     vailCorner = Instance.new("UICorner")
     description4 = Instance.new("TextLabel")
@@ -427,7 +411,7 @@ function IceHub.CreateMain(gameName, subtitle)
     PlayerImageLabel.Size = UDim2.new(0, 100, 0, 100)
     if avatarHidden then
         task.spawn(function()
-            PlayerImageLabel.Image = ""
+            PlayerImageLabel.Image = "rbxassetid://17858239341"
         end)
     elseif avatarHidden == false then
         task.spawn(function()
@@ -451,7 +435,7 @@ function IceHub.CreateMain(gameName, subtitle)
     NameLabel.Font = Enum.Font.SourceSans
     if usernameHidden ~= false then
         if usernameHidden then
-            NameLabel.Text = "Hey, [hidden] !"
+            NameLabel.Text = generateRandomString(5)
         end
     else
         NameLabel.Text = "Hey, " .. game.Players.LocalPlayer.DisplayName .. " !"
@@ -625,47 +609,7 @@ function IceHub.CreateMain(gameName, subtitle)
     Credits.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     Credits.BackgroundTransparency = 1
     Credits.Position = UDim2.new(0, 0, -1.24242425, 0)
-    Credits.Size = UDim2.new(0, 285, 0, 477)
-    Ice.Name = "Le M (Ice)"
-    Ice.Parent = Credits
-    Ice.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Ice.BackgroundTransparency = 0.4
-    Ice.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Ice.Position = UDim2.new(0, 0, 0.0589998811, 0)
-    Ice.Size = UDim2.new(0, 285, 0, 94)
-    iceCorner.CornerRadius = UDim.new(0, 4)
-    iceCorner.Parent = Ice
-    Description.Name = "Description"
-    Description.Parent = Ice
-    Description.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Description.BackgroundTransparency = 1
-    Description.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Description.Position = UDim2.new(0.235087723, 0, 0.734654367, 0)
-    Description.Size = UDim2.new(0, 150, 0, 19)
-    Description.Font = Enum.Font.SourceSans
-    Description.Text = ""
-    Description.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Description.TextSize = 16
-    Description.TextWrapped = true
-    descriptionCorner.CornerRadius = UDim.new(0, 4)
-    descriptionCorner.Parent = Description
-    iceStroke.Color = Color3.fromRGB(39, 39, 39)
-    iceStroke.Thickness = 0.8
-    iceStroke.Parent = Ice
-    Developer.Name = "Developer"
-    Developer.Parent = Ice
-    Developer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Developer.BackgroundTransparency = 1
-    Developer.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Developer.Position = UDim2.new(0.245614037, 0, 0.0866539478, 0)
-    Developer.Size = UDim2.new(0, 145, 0, 30)
-    Developer.Font = Enum.Font.Gotham
-    Developer.Text = "Ice, Creator"
-    Developer.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Developer.TextSize = 14
-    Developer.TextWrapped = true
-    developerCorner.CornerRadius = UDim.new(0, 4)
-    developerCorner.Parent = Developer
+    Credits.Size = UDim2.new(0, 285, 0, 370)
     Developers.Name = "Developers"
     Developers.Parent = Credits
     Developers.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
@@ -673,64 +617,10 @@ function IceHub.CreateMain(gameName, subtitle)
     Developers.Position = UDim2.new(0, 0, 0.00437349873, 0)
     Developers.Size = UDim2.new(0, 285, 0, 20)
     Developers.Font = Enum.Font.Gotham
-    Developers.Text = "Developers"
+    Developers.Text = "Owner"
     Developers.TextColor3 = Color3.fromRGB(129, 129, 129)
     Developers.TextSize = 15
     Developers.TextYAlignment = Enum.TextYAlignment.Top
-    HexR.Name = "HexR"
-    HexR.Parent = Credits
-    HexR.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    HexR.BackgroundTransparency = 0.4
-    HexR.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    HexR.Position = UDim2.new(0, 0, 0.342046708, 0)
-    HexR.Size = UDim2.new(0, 285, 0, 107)
-    hexrCorner.CornerRadius = UDim.new(0, 4)
-    hexrCorner.Parent = HexR
-    description2.Name = "Description"
-    description2.Parent = HexR
-    description2.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    description2.BackgroundTransparency = 1
-    description2.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    description2.Position = UDim2.new(0.424561411, 0, 0.744000077, 0)
-    description2.Size = UDim2.new(0, 150, 0, 19)
-    description2.Font = Enum.Font.SourceSans
-    description2.Text = "Discord: xyz.hexr"
-    description2.TextColor3 = Color3.fromRGB(255, 255, 255)
-    description2.TextSize = 16
-    description2.TextWrapped = true
-    description2.TextXAlignment = Enum.TextXAlignment.Left
-    description2Corner.CornerRadius = UDim.new(0, 4)
-    description2Corner.Parent = description2
-    hexrStroke.Color = Color3.fromRGB(39, 39, 39)
-    hexrStroke.Thickness = 0.8
-    hexrStroke.Parent = HexR
-    developer2.Name = "Developer"
-    developer2.Parent = HexR
-    developer2.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    developer2.BackgroundTransparency = 1
-    developer2.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    developer2.Position = UDim2.new(0.424561411, 0, 0.0866539478, 0)
-    developer2.Size = UDim2.new(0, 145, 0, 30)
-    developer2.Font = Enum.Font.Gotham
-    developer2.Text = "HexR, Developer"
-    developer2.TextColor3 = Color3.fromRGB(255, 255, 255)
-    developer2.TextSize = 14
-    developer2.TextWrapped = true
-    developer2.TextXAlignment = Enum.TextXAlignment.Left
-    developer2Corner.CornerRadius = UDim.new(0, 4)
-    developer2Corner.Parent = developer2
-    hexrImage.Parent = HexR
-    hexrImage.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    hexrImage.BackgroundTransparency = 1
-    hexrImage.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    hexrImage.BorderSizePixel = 0
-    hexrImage.Position = UDim2.new(0.0419999994, 0, 0.0960000008, 0)
-    hexrImage.Size = UDim2.new(0, 88, 0, 88)
-    task.spawn(function()
-        hexrImage.Image = game.Players:GetUserThumbnailAsync(406707268, Enum.ThumbnailType.AvatarBust, Enum.ThumbnailSize.Size420x420) or "rbxasset://textures/ui/GuiImagePlaceholder.png"
-    end)
-    hexrImageCorner.CornerRadius = UDim.new(0, 4)
-    hexrImageCorner.Parent = hexrImage
     xjfs.Name = "xjfs"
     xjfs.Parent = Credits
     xjfs.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
@@ -799,7 +689,7 @@ function IceHub.CreateMain(gameName, subtitle)
     Vail.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     Vail.BackgroundTransparency = 0.4
     Vail.BorderColor3 = Color3.fromRGB(20, 20, 20)
-    Vail.Position = UDim2.new(0, 0, 0.874, 0)
+    Vail.Position = UDim2.new(0, 0, 0.0589998811, 0)
     Vail.Size = UDim2.new(0, 285, 0, 107)
     vailCorner.CornerRadius = UDim.new(0, 4)
     vailCorner.Parent = Vail
