@@ -1,5 +1,3 @@
-tem como arrumar o slider? eo visual tem umas opçoes faltando
-
 local IceHub = {}
 local function generateRandomString(length)
     local chars = "abcdefghijklmnopqrstuvwxyz0123456789"
