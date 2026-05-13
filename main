@@ -1146,7 +1146,7 @@ function IceHub.CreateMain(gameName, subtitle)
     CloseMessage.Position = UDim2.new(0.237655759, 0, 0.136855215, 0)
     CloseMessage.Size = UDim2.new(0, 169, 0, 50)
     CloseMessage.Font = Enum.Font.SourceSans
-    CloseMessage.Text = "Warning! Are you sure to close IceHub?"
+    CloseMessage.Text = "Warning! Are you sure to close Anti Hub?"
     CloseMessage.TextColor3 = Color3.fromRGB(255, 255, 255)
     CloseMessage.TextSize = 18
     CloseMessage.BackgroundTransparency = 1
